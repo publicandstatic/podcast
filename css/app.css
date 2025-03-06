@@ -1,0 +1,151 @@
+body {
+    font-family: 'Play';
+    color: #F7F619;
+    text-rendering: optimizeLegibility;
+    background-color: #22A8CB;
+}
+
+#background-сanvas {
+    position: fixed;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(150px);
+    -webkit-filter: blur(150px);
+    -moz-filter: blur(150px);
+    -o-filter: blur(150px);
+    -ms-filter: blur(150px);
+}
+
+h1 {
+    font-weight: 700;
+    -webkit-filter: drop-shadow(0px 0px 4px #1f222c);
+    filter: drop-shadow(0px 0px 4px #1f222c);
+}
+
+.counters {
+    font-size: 1.25rem;
+    font-weight: 700;
+    -webkit-filter: drop-shadow(0px 0px 4px #1f222c);
+    filter: drop-shadow(0px 0px 4px #1f222c);
+}
+
+.form-select {
+    color: #fff !important;
+    background-color: #3e475f !important;
+}
+
+.form-control {
+    color: #fff !important;
+    background-color: #3e475f !important;
+}
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgba(255,255,255,0.75)!important;
+    opacity: 1;
+}
+
+.sortable {
+    cursor: pointer;
+    position: relative;
+    padding-right: 20px;
+}
+.sortable .sort-arrow {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+}
+.sortable.asc .sort-arrow {
+    border-bottom: 5px solid #fff;
+}
+.sortable.desc .sort-arrow {
+    border-top: 5px solid #fff;
+}
+
+ table {
+     --bs-table-hover-bg: rgba(0, 0, 0, 0.1) !important;
+     --bs-table-hover-color: #fff !important;
+     --bs-table-color-state:  #fff !important;
+     --bs-table-bg:  #3e475f !important;
+     --bs-table-border-color:  #1f222c !important;
+     -webkit-filter: drop-shadow(0px 0px 4px #1f222c);
+     filter: drop-shadow(0px 0px 4px #1f222c);
+ }
+
+.row-played, .row-played td {
+   background-color: #00838f;
+}
+
+.row-completed, .row-completed td {
+    background-color: #0277bd ;
+}
+
+.row-planned, .row-planned td {
+    background-color: #2e7d32;
+}
+
+.bootstrap-select > .dropdown-toggle.bs-placeholder:active {
+    background: #FFF;
+    color: #000;
+    border-color: #999;
+}
+
+.dropdown-center {
+    z-index: 100;
+}
+#hamburger {
+    background-color: #3e475f;
+    color: #FFFFFF;
+}
+
+#hamburger:hover, #hamburger:active {
+    background-color: #3e475f;
+    color: #FFFFFF;
+    border-color: #FFFFFF;
+}
+
+.dropdown-menu {
+    --bs-dropdown-bg: #3e475f;
+}
+.dropdown-item {
+    --bs-dropdown-link-color: #FFFFFF;
+    --bs-dropdown-link-active-bg: rgba(31, 34, 44, 0.5);
+    --bs-dropdown-link-active-color: #FFFFFF;
+    --bs-dropdown-link-hover-bg: #1f222c;
+    --bs-dropdown-link-hover-color: #FFFFFF;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+    color: var(--bs-dropdown-link-hover-color) !important;
+    background-color: var(--bs-dropdown-link-hover-bg) !important;
+}
+
+.table td, .table th {
+    line-height: 1.0;
+}
+
+.description {
+    display: block;
+    margin-top: 1%;
+    font-size: 1rem;
+    line-height: 1.2;
+    white-space: pre-wrap;
+}
+
+img.float-start {
+    max-width: 150px; /* Контроль розміру зображення */
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.title {
+    padding-top: 10px;
+}
+
