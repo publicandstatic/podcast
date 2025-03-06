@@ -93,12 +93,22 @@ $(document).ready(function () {
     function updateCounters(videos) {
         let totalVideos = videos.length;
         let totalDuration = formatDuration(videos.reduce((sum, video) => sum + (video.duration || 0), 0));
+
+        let oldestDate = videos.reduce((oldest, video) => {
+            let videoDate = new Date(video.publishedAt);
+            return videoDate < oldest ? videoDate : oldest;
+        }, new Date());
+
+        let now = new Date();
+        let totalDays = Math.floor((now - oldestDate) / (1000 * 60 * 60 * 24));
+
         let totalViewCount = videos.reduce((sum, video) => sum + (video.viewCount || 0), 0);
         let totalLikeCount = videos.reduce((sum, video) => sum + (video.likeCount || 0), 0);
         let totalCommentCount = videos.reduce((sum, video) => sum + (video.commentCount || 0), 0);
 
         $('#totalVideos').text(totalVideos);
         $('#totalDuration').text(totalDuration);
+        $('#totalDays').text(totalDays);
         $('#totalViewCount').text(totalViewCount);
         $('#totalLikeCount').text(totalLikeCount);
         $('#totalCommentCount').text(totalCommentCount);
