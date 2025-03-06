@@ -33,7 +33,7 @@ $(document).ready(function () {
                 </a>
             </div>
 
-            <span class="description">${getDescriptionPreview(video.description)}</span>
+            <span class="description">${video.description}</span>
         </div>
     </div>
 </td>
@@ -54,7 +54,7 @@ $(document).ready(function () {
         const now = new Date(); // Поточний час
 
         // Встановлюємо Київський часовий пояс (Europe/Kiev)
-        const options = { timeZone: "Europe/Kiev" };
+        const options = {timeZone: "Europe/Kiev"};
         const kievNow = new Date(now.toLocaleString("en-US", options));
         const kievDate = new Date(date.toLocaleString("en-US", options));
 
@@ -79,13 +79,6 @@ $(document).ready(function () {
         });
     }
 
-    function getDescriptionPreview(description) {
-        // if (!description) return '';
-        // const parts = description.split("\n\n");
-        // return parts[0] + '\n' + parts[1] + '\n' + parts[2] || '';
-        return description;
-    }
-
     function sortVideos(videos, field, ascending) {
         return videos.sort((a, b) => {
             if (field === 'publishedAt') {
@@ -96,6 +89,7 @@ $(document).ready(function () {
             return 0;
         });
     }
+
     function updateCounters(videos) {
         let totalVideos = videos.length;
         let totalDuration = formatDuration(videos.reduce((sum, video) => sum + (video.duration || 0), 0));
@@ -126,7 +120,53 @@ $(document).ready(function () {
         }
         renderTable(filteredVideos);
         updateSortIndicators();
+        updateAutocomplete(titleSearch);
     }
+
+    function extractUniqueWords(text) {
+        return [...new Set(text.match(/[@#]?\b\w{1,}\b/g) || [])];
+    }
+
+    function updateAutocomplete(input) {
+        const words = new Set();
+        videosData.forEach(video => {
+            extractUniqueWords(video.title).forEach(word => words.add(word));
+            extractUniqueWords(video.description || '').forEach(word => words.add(word));
+        });
+
+        const suggestions = [...words]
+            .filter(word => word.toLowerCase().startsWith(input.toLowerCase()))
+            .slice(0, 5);
+
+        let autocompleteList = $('#autocomplete-list');
+        if (!autocompleteList.length) {
+            $('#titleSearch').after('<div id="autocomplete-list" class="dropdown-menu"></div>');
+            autocompleteList = $('#autocomplete-list');
+        }
+
+        autocompleteList.empty();
+        if (input.length === 0 || suggestions.length === 0) {
+            autocompleteList.hide();
+            return;
+        }
+
+        suggestions.forEach(word => {
+            autocompleteList.append(`<button type="button" class="dropdown-item">${word}</button>`);
+        });
+        autocompleteList.show();
+    }
+
+    $(document).on('click', '#autocomplete-list button', function () {
+        $('#titleSearch').val($(this).text());
+        $('#autocomplete-list').hide();
+        updateTable();
+    });
+
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('#titleSearch, #autocomplete-list').length) {
+            $('#autocomplete-list').hide();
+        }
+    });
 
     function updateSortIndicators() {
         $('.sortable').removeClass('asc desc');
@@ -134,7 +174,7 @@ $(document).ready(function () {
             const sortColumn = currentSort.field === 'duration' ? '#sortByDuration' :
                 currentSort.field === 'viewCount' ? '#sortByViewCount' :
                     currentSort.field === 'likeCount' ? '#sortByLikeCount' :
-                            currentSort.field === 'commentCount' ? '#sortByCommentCount' : '#sortByCommentPublishedAt';
+                        currentSort.field === 'commentCount' ? '#sortByCommentCount' : '#sortByCommentPublishedAt';
 
             if (sortColumn) {
                 $(sortColumn).addClass(currentSort.ascending ? 'asc' : 'desc');
@@ -203,49 +243,50 @@ var delta;
 var tamanho = 50;
 var ismobile = false;
 var varpi = 2 * Math.PI;
-var interval = 1000/fps;
+var interval = 1000 / fps;
 var objforDraw = new Array();
 
-document.addEventListener("DOMContentLoaded", function() {
-    window.requestAnimFrame = (function() {
+document.addEventListener("DOMContentLoaded", function () {
+    window.requestAnimFrame = (function () {
         return window.requestAnimationFrame || window
                 .webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
             window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-            function(callback) {
+            function (callback) {
                 return window.setTimeout(callback,
                     1000 / fps)
             }
     })();
-    window.cancelRequestAnimFrame = (function() {
+    window.cancelRequestAnimFrame = (function () {
         return window.cancelAnimationFrame || window.webkitCancelRequestAnimationFrame ||
             window.mozCancelRequestAnimationFrame ||
             window.oCancelRequestAnimationFrame ||
             window.msCancelRequestAnimationFrame ||
             clearTimeout
     })();
-    var ShadowObject = function(color) {
+    var ShadowObject = function (color) {
         this.x = ((Math.random() * canvas.width) + 10);
         this.y = ((Math.random() * canvas.height) + 10);
         this.color = color;
         this.size = tamanho;
         this.dirX = Math.random() < 0.5 ? -1 : 1;
         this.dirY = Math.random() < 0.5 ? -1 : 1;
-        this.checkIsOut = function() {
+        this.checkIsOut = function () {
             if ((this.x > canvas.width + (this.size /
                 2)) || (this.x < 0 - (this.size /
                 2))) {
                 this.dirX = this.dirX * -1
-            };
+            }
+            ;
             if ((this.y > canvas.height + (this.size /
                 2)) || (this.y < 0 - (this.size /
                 2))) {
                 this.dirY = this.dirY * -1
             }
         };
-        this.move = function() {
+        this.move = function () {
 
-            this.x += this.dirX*2;
-            this.y += this.dirY*2
+            this.x += this.dirX * 2;
+            this.y += this.dirY * 2
 
         }
     };
@@ -258,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function() {
             context.arc(objforDraw[i].x, objforDraw[i].y, objforDraw[i].size, 0, varpi, false);
             context.fillStyle = objforDraw[i].color;
             context.shadowColor = objforDraw[i].color;
-            if(ismobile == false){
+            if (ismobile == false) {
                 context.shadowBlur = 50;
                 context.shadowOffsetX = 0;
                 context.shadowOffsetY = 0;
@@ -278,12 +319,13 @@ document.addEventListener("DOMContentLoaded", function() {
             then = now - (delta % interval)
         }
     };
-    document.body.onload = function(e) {
+    document.body.onload = function (e) {
         for (i = 0; i < colors.length * num; i++) {
             var color = ((i >= colors.length) ? colors[(i -
                 colors.length)] : colors[i]);
             objforDraw.push(new ShadowObject(color))
-        };
+        }
+        ;
         animloop()
     };
 });
