@@ -140,7 +140,7 @@ h1 {
 }
 
 img.float-start {
-    max-width: 150px; /* Контроль розміру зображення */
+    max-width: 150px;
     height: auto;
     margin-bottom: 10px;
 }
