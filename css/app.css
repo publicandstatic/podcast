@@ -129,12 +129,18 @@ h1 {
 
 .table td, .table th {
     line-height: 1.0;
+    min-width: 70px;
+}
+.table th {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: normal;
 }
 
 .description {
     display: block;
     margin-top: 1%;
-    font-size: 1rem;
+    font-size: 0.8rem;
     line-height: 1.2;
     white-space: pre-wrap;
 }
@@ -147,5 +153,25 @@ img.float-start {
 
 .title {
     padding-top: 10px;
+}
+#mention-buttons {
+    text-align: center;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: #394055;
+    --bs-btn-border-color: #394055;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #394055;
+    --bs-btn-hover-border-color: #394055;
+    --bs-btn-focus-shadow-rgb: 108, 117, 125;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #394055;
+    --bs-btn-active-border-color: #394055;
+    --bs-btn-active-shadow: #394055;
+    --bs-btn-disabled-color: #394055;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #394055;
+    --bs-gradient: none;
 }
 

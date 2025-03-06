@@ -140,31 +140,56 @@ $(document).ready(function () {
     function updateAutocomplete(input) {
         const words = new Set();
         videosData.forEach(video => {
-            extractUniqueWords(video.title).forEach(word => words.add(word));
-            extractUniqueWords(video.description || '').forEach(word => words.add(word));
+            extractUniqueWords(video.title).forEach(word => {
+                if (word.startsWith('@') && word !== '@publicandstatic') {
+                    words.add(word);
+                }
+            });
+            extractUniqueWords(video.description || '').forEach(word => {
+                if (word.startsWith('@') && word !== '@publicandstatic') {
+                    words.add(word);
+                }
+            });
+
+            if (video.tags) {
+                try {
+                    let tagsArray = JSON.parse(video.tags);
+                    if (Array.isArray(tagsArray)) {
+                        tagsArray.forEach(tag => {
+                            if (tag.startsWith('@') && tag !== '@publicandstatic') {
+                                words.add(tag);
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error("Error parsing tags: ", e);
+                }
+            }
         });
 
-        const suggestions = [...words]
-            .filter(word => word.toLowerCase().startsWith(input.toLowerCase()))
-            .slice(0, 5);
-
-        let autocompleteList = $('#autocomplete-list');
-        if (!autocompleteList.length) {
-            $('#titleSearch').after('<div id="autocomplete-list" class="dropdown-menu"></div>');
-            autocompleteList = $('#autocomplete-list');
+        let buttonContainer = $('#mention-buttons');
+        if (!buttonContainer.length) {
+            $('#counters').after('<div id="mention-buttons" class="m-2 d-flex flex-wrap justify-content-between"></div>');
+            buttonContainer = $('#mention-buttons');
+            counters
         }
 
-        autocompleteList.empty();
-        if (input.length === 0 || suggestions.length === 0) {
-            autocompleteList.hide();
+        buttonContainer.empty();
+        if (words.size === 0) {
+            buttonContainer.hide();
             return;
         }
 
-        suggestions.forEach(word => {
-            autocompleteList.append(`<button type="button" class="dropdown-item">${word}</button>`);
+        words.forEach(word => {
+            buttonContainer.append(`<button type="button" class="btn btn-outline-secondary btn-sm m-1 mention-btn">${word}</button>`);
         });
-        autocompleteList.show();
+        buttonContainer.show();
     }
+
+    $(document).on('click', '.mention-btn', function () {
+        $('#titleSearch').val($(this).text()).trigger('input');
+        updateTable();
+    });
 
     $(document).on('click', '#autocomplete-list button', function () {
         $('#titleSearch').val($(this).text());
