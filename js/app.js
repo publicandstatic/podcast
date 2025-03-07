@@ -125,16 +125,12 @@ $(document).ready(function () {
                 try {
                     let tagsArray = JSON.parse(video.tags);
                     if (Array.isArray(tagsArray)) {
-                        console.log(tagsArray);
                         matchesTags = tagsArray.some(tag => tag.toLowerCase().includes(titleSearch.toLowerCase()));
                     }
                 } catch (e) {
                     console.error("Error parsing tags: ", e);
                 }
             }
-
-
-            console.log(matchesTitle, matchesDescription, matchesTags);
 
             return matchesTitle || matchesDescription || matchesTags;
         });
@@ -158,15 +154,22 @@ $(document).ready(function () {
 
     function updateAutocomplete(input) {
         const words = new Set();
+        const words2 = new Set();
         videosData.forEach(video => {
             extractUniqueWords(video.title).forEach(word => {
                 if (word.startsWith('@') && word !== '@publicandstatic') {
                     words.add(word);
                 }
+                if (word.startsWith('#') && word !== '#publicandstatic') {
+                    words2.add(word);
+                }
             });
             extractUniqueWords(video.description || '').forEach(word => {
                 if (word.startsWith('@') && word !== '@publicandstatic') {
                     words.add(word);
+                }
+                if (word.startsWith('#') && word !== '#publicandstatic') {
+                    words2.add(word);
                 }
             });
 
@@ -178,6 +181,9 @@ $(document).ready(function () {
                             if (tag.startsWith('@') && tag !== '@publicandstatic') {
                                 words.add(tag);
                             }
+                            if (tag.startsWith('#') && tag !== '#publicandstatic') {
+                                words2.add(tag);
+                            }
                         });
                     }
                 } catch (e) {
@@ -188,7 +194,11 @@ $(document).ready(function () {
 
         let buttonContainer = $('#mention-buttons');
         if (!buttonContainer.length) {
-            $('#counters').after('<div id="mention-buttons" class="m-2 d-flex flex-wrap justify-content-between"></div>');
+            if (words.size > 8) {
+                $('#counters').after('<div id="mention-buttons" class="m-2 d-flex flex-wrap justify-content-between"></div>');
+            } else {
+                $('#counters').after('<div id="mention-buttons" class="m-2 d-flex flex-wrap justify-content-center"></div>');
+            }
             buttonContainer = $('#mention-buttons');
         }
 
@@ -202,6 +212,27 @@ $(document).ready(function () {
             buttonContainer.append(`<button type="button" class="btn btn-outline-secondary btn-sm m-1 mention-btn">${word}</button>`);
         });
         buttonContainer.show();
+
+        let buttonContainer2 = $('#mention-buttons2');
+        if (!buttonContainer2.length) {
+            if (words2.size > 8) {
+                $('#mention-buttons').after('<div id="mention-buttons2" class="m-2 d-flex flex-wrap justify-content-between"></div>');
+            } else {
+                $('#mention-buttons').after('<div id="mention-buttons2" class="m-2 d-flex flex-wrap justify-content-center"></div>');
+            }
+            buttonContainer2 = $('#mention-buttons2');
+        }
+
+        buttonContainer2.empty();
+        if (words2.size === 0) {
+            buttonContainer2.hide();
+            return;
+        }
+
+        words2.forEach(word => {
+            buttonContainer2.append(`<button type="button" class="btn btn-outline-secondary btn-sm m-1 mention-btn">${word}</button>`);
+        });
+        buttonContainer2.show();
     }
 
     function formatTags(tags) {
