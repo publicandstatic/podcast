@@ -34,6 +34,7 @@ $(document).ready(function () {
             </div>
 
             <span class="description">${video.description}</span>
+             <span class="tags">${formatTags(video.tags)}</span>
         </div>
     </div>
 </td>
@@ -118,9 +119,27 @@ $(document).ready(function () {
         return videos.filter(video => {
             const matchesTitle = video.title.toLowerCase().includes(titleSearch.toLowerCase());
             const matchesDescription = video.description.toLowerCase().includes(titleSearch.toLowerCase());
-            return matchesTitle || matchesDescription;
+            let matchesTags = false;
+
+            if (video.tags) {
+                try {
+                    let tagsArray = JSON.parse(video.tags);
+                    if (Array.isArray(tagsArray)) {
+                        console.log(tagsArray);
+                        matchesTags = tagsArray.some(tag => tag.toLowerCase().includes(titleSearch.toLowerCase()));
+                    }
+                } catch (e) {
+                    console.error("Error parsing tags: ", e);
+                }
+            }
+
+
+            console.log(matchesTitle, matchesDescription, matchesTags);
+
+            return matchesTitle || matchesDescription || matchesTags;
         });
     }
+
 
     function updateTable() {
         const titleSearch = $('#titleSearch').val();
@@ -171,7 +190,6 @@ $(document).ready(function () {
         if (!buttonContainer.length) {
             $('#counters').after('<div id="mention-buttons" class="m-2 d-flex flex-wrap justify-content-between"></div>');
             buttonContainer = $('#mention-buttons');
-            counters
         }
 
         buttonContainer.empty();
@@ -186,7 +204,20 @@ $(document).ready(function () {
         buttonContainer.show();
     }
 
-    $(document).on('click', '.mention-btn', function () {
+    function formatTags(tags) {
+        try {
+            let tagsArray = JSON.parse(tags);
+            if (Array.isArray(tagsArray)) {
+                return tagsArray.map(tag => `<a class="tag-btn">${tag}</a>`).join("     ");
+            }
+        } catch (e) {
+            console.error("Error parsing tags: ", e);
+        }
+        return "";
+    }
+
+    $(document).on('click', '.mention-btn, .tag-btn', function () {
+        let currentText = $('#titleSearch').val();
         $('#titleSearch').val($(this).text()).trigger('input');
         updateTable();
     });

@@ -145,6 +145,14 @@ h1 {
     white-space: pre-wrap;
 }
 
+.tags {
+    display: block;
+    margin-top: 1%;
+    font-size: 0.7rem;
+    line-height: 1.1;
+    white-space: pre-wrap;
+}
+
 img.float-start {
     max-width: 150px;
     height: auto;
@@ -173,5 +181,12 @@ img.float-start {
     --bs-btn-disabled-bg: transparent;
     --bs-btn-disabled-border-color: #394055;
     --bs-gradient: none;
+}
+
+a  {
+    color: rgb(208, 207, 25);
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
