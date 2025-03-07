@@ -108,7 +108,7 @@ $(document).ready(function () {
         let totalCommentCount = videos.reduce((sum, video) => sum + (video.commentCount || 0), 0);
 
         $('#totalVideos').text(totalVideos);
-        
+
         $('#totalDuration').text(totalDuration);
         $('#totalDays').text(totalDays);
         $('#totalViewCount').text(totalViewCount);
