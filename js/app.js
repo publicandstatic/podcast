@@ -28,7 +28,7 @@ $(document).ready(function () {
                 <a href="https://www.youtube.com/watch?v=${video.videoId}" target="_blank" class="fw-bold title">
                     ${video.title}
                 </a>
-                <a href="https://studio.youtube.com/video/${video.videoId}/edit" target="_blank" class="btn btn-link btn-sm">
+                <a href="https://studio.youtube.com/video/${video.videoId}/edit" target="_blank" class="btn btn-sm">
                     <i class="bi bi-pencil"></i>
                 </a>
             </div>
