@@ -15,21 +15,21 @@ $(document).ready(function () {
         tableBody.empty();
 
         videos.forEach(video => {
+            let fresh = getDaysSincePublished(video.updated_at) < 1
             tableBody.append(`
                 <tr>
                <td>
     <div class="clearfix">
         <a href="https://www.youtube.com/watch?v=${video.videoId}" target="_blank">
-            <img src="${video.thumbnail}" alt="${video.title}" height="150" class="float-start me-3">
+            <img src="${video.thumbnail}" alt="${video.title} " height="150" class="float-start me-3">
         </a>
-
         <div>
             <div class="d-flex justify-content-between align-items-start">
                 <a href="https://www.youtube.com/watch?v=${video.videoId}" target="_blank" class="fw-bold title">
                     ${video.title}
                 </a>
                 <a href="https://studio.youtube.com/video/${video.videoId}/edit" target="_blank" class="btn btn-sm">
-                    <i class="bi bi-pencil"></i>
+                    ${fresh ? '<i class="bi bi-pencil-fill"></i>' : '<i class="bi bi-pencil"></i>'}
                 </a>
             </div>
 
