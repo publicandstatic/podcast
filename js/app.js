@@ -149,7 +149,7 @@ $(document).ready(function () {
     }
 
     function extractUniqueWords(text) {
-        return [...new Set(text.match(/[@#]?\b\w{1,}\b/g) || [])];
+        return [...new Set(text.match(/[@#][\wа-яА-ЯіІїЇєЄґҐ0-9]+/gu) || [])];
     }
 
     function updateAutocomplete(input) {
@@ -164,7 +164,7 @@ $(document).ready(function () {
                     words2.add(word);
                 }
             });
-            extractUniqueWords(video.description || '').forEach(word => {
+            extractUniqueWords(video.description).forEach(word => {
                 if (word.startsWith('@') && word !== '@publicandstatic') {
                     words.add(word);
                 }
@@ -192,12 +192,33 @@ $(document).ready(function () {
             }
         });
 
+        let buttonContainer2 = $('#mention-buttons2');
+        if (!buttonContainer2.length) {
+            if (words2.size > 8) {
+                $('#counters').after('<div id="mention-buttons2" class="m-2 d-flex flex-wrap justify-content-between"></div>');
+            } else {
+                $('#counters').after('<div id="mention-buttons2" class="m-2 d-flex flex-wrap justify-content-center"></div>');
+            }
+            buttonContainer2 = $('#mention-buttons2');
+        }
+
+        buttonContainer2.empty();
+        if (words2.size === 0) {
+            buttonContainer2.hide();
+            return;
+        }
+
+        words2.forEach(word => {
+            buttonContainer2.append(`<button type="button" class="btn btn-outline-secondary btn-sm m-1 mention-btn">${word}</button>`);
+        });
+        buttonContainer2.show();
+
         let buttonContainer = $('#mention-buttons');
         if (!buttonContainer.length) {
             if (words.size > 8) {
-                $('#counters').after('<div id="mention-buttons" class="m-2 d-flex flex-wrap justify-content-between"></div>');
+                $('#mention-buttons2').after('<div id="mention-buttons" class="m-2 d-flex flex-wrap justify-content-between"></div>');
             } else {
-                $('#counters').after('<div id="mention-buttons" class="m-2 d-flex flex-wrap justify-content-center"></div>');
+                $('#mention-buttons2').after('<div id="mention-buttons" class="m-2 d-flex flex-wrap justify-content-center"></div>');
             }
             buttonContainer = $('#mention-buttons');
         }
@@ -213,26 +234,7 @@ $(document).ready(function () {
         });
         buttonContainer.show();
 
-        let buttonContainer2 = $('#mention-buttons2');
-        if (!buttonContainer2.length) {
-            if (words2.size > 8) {
-                $('#mention-buttons').after('<div id="mention-buttons2" class="m-2 d-flex flex-wrap justify-content-between"></div>');
-            } else {
-                $('#mention-buttons').after('<div id="mention-buttons2" class="m-2 d-flex flex-wrap justify-content-center"></div>');
-            }
-            buttonContainer2 = $('#mention-buttons2');
-        }
 
-        buttonContainer2.empty();
-        if (words2.size === 0) {
-            buttonContainer2.hide();
-            return;
-        }
-
-        words2.forEach(word => {
-            buttonContainer2.append(`<button type="button" class="btn btn-outline-secondary btn-sm m-1 mention-btn">${word}</button>`);
-        });
-        buttonContainer2.show();
     }
 
     function formatTags(tags) {
