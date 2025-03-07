@@ -152,6 +152,10 @@ $(document).ready(function () {
         return [...new Set(text.match(/[@#][\wа-яА-ЯіІїЇєЄґҐ0-9]+/gu) || [])];
     }
 
+    function getLongWords(text) {
+        return (text.match(/[\p{L}\p{N}]{4,}/gu) || []);
+    }
+
     function updateAutocomplete(input) {
         if (!input) {
             $('#autocomplete-list').hide();
@@ -161,8 +165,13 @@ $(document).ready(function () {
         const words2 = new Set();
         const wordsAll = new Set();
         videosData.forEach(video => {
-            extractUniqueWords(video.title).forEach(word => {
+            getLongWords(video.title).forEach(word => {
                 wordsAll.add(word)
+            });
+            getLongWords(video.description).forEach(word => {
+                wordsAll.add(word)
+            });
+            extractUniqueWords(video.title).forEach(word => {
                 if (word.startsWith('@') && word !== '@publicandstatic') {
                     words.add(word);
                 }
@@ -243,6 +252,7 @@ $(document).ready(function () {
         buttonContainer.show();
 
         const searchWords = [...wordsAll].filter(word => word.toLowerCase().includes(input.toLowerCase()));
+        console.log(wordsAll, searchWords);
 
         let autoCompleteList = $('#autocomplete-list');
         autoCompleteList.empty();
