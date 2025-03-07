@@ -428,3 +428,17 @@ document.addEventListener("DOMContentLoaded", function () {
         animloop()
     };
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const thead = document.querySelector("thead");
+    const table = document.querySelector("table");
+
+    window.addEventListener("scroll", function () {
+        if (table.getBoundingClientRect().top <= 0) {
+            thead.classList.add("sticky");
+        } else {
+            thead.classList.remove("sticky");
+        }
+    });
+});
+
