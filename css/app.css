@@ -184,6 +184,7 @@ img.float-start {
 }
 
 a  {
+    color: #e2e3e7;
     cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
