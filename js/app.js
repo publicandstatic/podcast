@@ -157,10 +157,6 @@ $(document).ready(function () {
     }
 
     function updateAutocomplete(input) {
-        if (!input) {
-            $('#autocomplete-list').hide();
-            return;
-        }
         const words = new Set();
         const words2 = new Set();
         const wordsAll = new Set();
@@ -251,6 +247,10 @@ $(document).ready(function () {
         });
         buttonContainer.show();
 
+        if (!input) {
+            $('#autocomplete-list').hide();
+            return;
+        }
         const searchWords = [...wordsAll].filter(word => word.toLowerCase().includes(input.toLowerCase()));
         console.log(wordsAll, searchWords);
 
