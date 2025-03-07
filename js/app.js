@@ -109,7 +109,6 @@ $(document).ready(function () {
 
         $('#totalVideos').text(totalVideos);
         $('#totalDuration').text(totalDuration);
-        
         $('#totalDays').text(totalDays);
         $('#totalViewCount').text(totalViewCount);
         $('#totalLikeCount').text(totalLikeCount);
