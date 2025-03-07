@@ -211,5 +211,37 @@ thead.sticky {
     filter: drop-shadow(0px 0px 4px #1f222c);
 }
 
+#autocomplete-list {
+    position: absolute;
+    background: #3e475f;
+    border: 1px solid #1f222c;
+    max-height: 200px;
+    overflow-y: auto;
+    min-width: 250px;
+    width: auto;
+    z-index: 1000;
+    display: none;
+    border-radius: 6px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#autocomplete-list button {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+#autocomplete-list button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+
 
 

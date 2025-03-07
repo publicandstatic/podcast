@@ -153,10 +153,16 @@ $(document).ready(function () {
     }
 
     function updateAutocomplete(input) {
+        if (!input) {
+            $('#autocomplete-list').hide();
+            return;
+        }
         const words = new Set();
         const words2 = new Set();
+        const wordsAll = new Set();
         videosData.forEach(video => {
             extractUniqueWords(video.title).forEach(word => {
+                wordsAll.add(word)
                 if (word.startsWith('@') && word !== '@publicandstatic') {
                     words.add(word);
                 }
@@ -165,6 +171,7 @@ $(document).ready(function () {
                 }
             });
             extractUniqueWords(video.description).forEach(word => {
+                wordsAll.add(word)
                 if (word.startsWith('@') && word !== '@publicandstatic') {
                     words.add(word);
                 }
@@ -178,6 +185,7 @@ $(document).ready(function () {
                     let tagsArray = JSON.parse(video.tags);
                     if (Array.isArray(tagsArray)) {
                         tagsArray.forEach(tag => {
+                            wordsAll.add(tag)
                             if (tag.startsWith('@') && tag !== '@publicandstatic') {
                                 words.add(tag);
                             }
@@ -234,7 +242,27 @@ $(document).ready(function () {
         });
         buttonContainer.show();
 
+        const searchWords = [...wordsAll].filter(word => word.toLowerCase().includes(input.toLowerCase()));
 
+        let autoCompleteList = $('#autocomplete-list');
+        autoCompleteList.empty();
+
+        if (searchWords.length === 0) {
+            autoCompleteList.hide();
+            return;
+        }
+
+        searchWords.forEach(word => {
+            let item = $(`<button type="button">${word}</button>`);
+            item.on('click', function () {
+                $('#titleSearch').val(word);
+                autoCompleteList.hide();
+                updateTable();
+            });
+            autoCompleteList.append(item);
+        });
+
+        autoCompleteList.show();
     }
 
     function formatTags(tags) {
