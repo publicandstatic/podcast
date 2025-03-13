@@ -21,7 +21,7 @@ $(document).ready(function () {
                <td>
     <div class="clearfix">
         <a href="https://www.youtube.com/watch?v=${video.videoId}" target="_blank">
-            <img src="${video.thumbnail}" alt="${video.title} " height="150" class="float-start me-3">
+            <img src="${video.thumbnail}" alt="${video.title} " height="150" class="fixed-aspect-ratio float-start me-3">
         </a>
         <div>
             <div class="d-flex justify-content-between align-items-start">

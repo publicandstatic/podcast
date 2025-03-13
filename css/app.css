@@ -241,7 +241,11 @@ thead.sticky {
     background: rgba(255, 255, 255, 0.1);
 }
 
-
+.fixed-aspect-ratio {
+    width: 100%; /* або фіксована ширина */
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
 
 
 
