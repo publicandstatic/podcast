@@ -163,8 +163,6 @@ img.float-start {
     max-width: 150px;
     height: auto;
     margin: 10px 5px 5px;
-    -webkit-filter: drop-shadow(0px 0px 4px #1f222c);
-    filter: drop-shadow(0px 0px 4px #1f222c)
 }
 
 .title {
