@@ -167,6 +167,10 @@ img.float-start {
 
 .title {
     padding-top: 10px;
+    max-width: 500px;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #mention-buttons {
     text-align: center;
