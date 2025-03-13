@@ -218,7 +218,6 @@ $(document).ready(function () {
         buttonContainer2.empty();
         if (words2.size === 0) {
             buttonContainer2.hide();
-            return;
         }
 
         words2.forEach(word => {
@@ -239,7 +238,6 @@ $(document).ready(function () {
         buttonContainer.empty();
         if (words.size === 0) {
             buttonContainer.hide();
-            return;
         }
 
         words.forEach(word => {
@@ -252,14 +250,12 @@ $(document).ready(function () {
             return;
         }
         const searchWords = [...wordsAll].filter(word => word.toLowerCase().includes(input.toLowerCase()));
-        console.log(wordsAll, searchWords);
 
         let autoCompleteList = $('#autocomplete-list');
         autoCompleteList.empty();
 
         if (searchWords.length === 0) {
             autoCompleteList.hide();
-            return;
         }
 
         searchWords.forEach(word => {
