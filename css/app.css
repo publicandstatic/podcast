@@ -172,6 +172,7 @@ img.float-start {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 #mention-buttons {
     text-align: center;
 }
