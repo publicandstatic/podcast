@@ -5,6 +5,16 @@ $(document).ready(function () {
     function fetchVideosData() {
         return $.getJSON('videos.json', function (data) {
             videosData = data;
+            videosData.forEach(video => {
+                let daysSincePublished = getDaysSincePublished(video.publishedAt);
+                let evergreen = 0;
+                if (daysSincePublished > 0 && video.viewCount > 0) {
+                    evergreen = Math.floor(video.viewCount / daysSincePublished);
+                }
+                video.evergreen = evergreen;
+                video.daysSincePublished = daysSincePublished;
+                video.fresh = daysSincePublished < 1;
+            });
             updateCounters(videosData);
             init();
         });
@@ -16,6 +26,11 @@ $(document).ready(function () {
 
         videos.forEach(video => {
             let fresh = getDaysSincePublished(video.updated_at) < 1
+            let daysSincePublished = getDaysSincePublished(video.publishedAt);
+            let evergreen = 0;
+            if (daysSincePublished > 0 && video.viewCount > 0) {
+                evergreen = Math.floor(video.viewCount / daysSincePublished);
+            }
             tableBody.append(`
                 <tr>
                <td>
@@ -43,7 +58,8 @@ $(document).ready(function () {
                     <td>${video.viewCount || 0}</td>
                     <td>${video.likeCount || 0}</td>
                     <td>${video.commentCount || 0}</td>
-                    <td>${getDaysSincePublished(video.publishedAt)}</td>
+                    <td>${evergreen}</td>
+                    <td>${daysSincePublished}</td>
                     <td>${formatPublishedDate(video.publishedAt)}</td>
                 </tr>
             `);
@@ -92,6 +108,8 @@ $(document).ready(function () {
     }
 
     function updateCounters(videos) {
+
+        console.log(videos);
         let totalVideos = videos.length;
         let totalDuration = formatDuration(videos.reduce((sum, video) => sum + (video.duration || 0), 0));
 
@@ -117,6 +135,9 @@ $(document).ready(function () {
         $('#totalViewCount').text(totalViewCount);
         $('#totalLikeCount').text(totalLikeCount);
         $('#totalCommentCount').text(totalCommentCount);
+        $('#awrViewCount').text(awrViewCount);
+        $('#awrLikeCount').text(awrLikeCount);
+        $('#awrCommentCount').text(awrCommentCount);
     }
 
     function filterVideos(videos, titleSearch) {
@@ -311,7 +332,8 @@ $(document).ready(function () {
             const sortColumn = currentSort.field === 'duration' ? '#sortByDuration' :
                 currentSort.field === 'viewCount' ? '#sortByViewCount' :
                     currentSort.field === 'likeCount' ? '#sortByLikeCount' :
-                        currentSort.field === 'commentCount' ? '#sortByCommentCount' : '#sortByCommentPublishedAt';
+                        currentSort.field === 'awrViewCount' ? '#sortByAwrViewCount' :
+                            currentSort.field === 'commentCount' ? '#sortByCommentCount' : '#sortByCommentPublishedAt';
 
             if (sortColumn) {
                 $(sortColumn).addClass(currentSort.ascending ? 'asc' : 'desc');
@@ -329,6 +351,12 @@ $(document).ready(function () {
         });
         $('#sortByViewCount').on('click', function () {
             currentSort.field = 'viewCount';
+            currentSort.ascending = !currentSort.ascending;
+            updateTable();
+        });
+        $('#sortByAwrViewCount').on('click', function () {
+            console.log(123);
+            currentSort.field = 'awrViewCount';
             currentSort.ascending = !currentSort.ascending;
             updateTable();
         });
