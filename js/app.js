@@ -7,8 +7,8 @@ $(document).ready(function () {
             data.forEach(video => {
                 let daysSincePublished = getDaysSincePublished(video.publishedAt);
                 let evergreen = 0;
-                if (daysSincePublished > 7 && video.viewCount > 0) {
-                    evergreen = Math.floor(video.viewCount / daysSincePublished * 0.6 + video.commentCount / daysSincePublished * 0.2 + video.likeCount / daysSincePublished * 0.2);
+                if (daysSincePublished > 0) {
+                    evergreen = Math.floor(video.viewCount / daysSincePublished + video.commentCount / daysSincePublished + video.likeCount / daysSincePublished);
                 }
                 video.evergreen = evergreen;
                 video.daysSincePublished = daysSincePublished;
@@ -122,6 +122,10 @@ $(document).ready(function () {
         let awrLikeCount = Math.floor(totalLikeCount / totalDays);
         let awrCommentCount = Math.floor(totalCommentCount / totalDays);
 
+        let awr2ViewCount = Math.floor(totalViewCount / totalVideos);
+        let awr2LikeCount = Math.floor(totalLikeCount / totalVideos);
+        let awr2CommentCount = Math.floor(totalCommentCount / totalVideos);
+
         $('#totalVideos').text(totalVideos);
         $('#totalDuration').text(totalDuration);
         $('#totalDays').text(totalDays);
@@ -131,6 +135,9 @@ $(document).ready(function () {
         $('#awrViewCount').text(awrViewCount);
         $('#awrLikeCount').text(awrLikeCount);
         $('#awrCommentCount').text(awrCommentCount);
+        $('#awr2ViewCount').text(awr2ViewCount);
+        $('#awr2LikeCount').text(awr2LikeCount);
+        $('#awr2CommentCount').text(awr2CommentCount);
     }
 
     function filterVideos(videos, titleSearch) {
