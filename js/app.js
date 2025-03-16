@@ -107,6 +107,10 @@ $(document).ready(function () {
         let totalLikeCount = videos.reduce((sum, video) => sum + (video.likeCount || 0), 0);
         let totalCommentCount = videos.reduce((sum, video) => sum + (video.commentCount || 0), 0);
 
+        let awrViewCount = Math.floor(totalViewCount / totalDays);
+        let awrLikeCount = Math.floor(totalLikeCount / totalDays);
+        let awrCommentCount = Math.floor(totalCommentCount / totalDays);
+
         $('#totalVideos').text(totalVideos);
         $('#totalDuration').text(totalDuration);
         $('#totalDays').text(totalDays);
