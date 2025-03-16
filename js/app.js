@@ -4,17 +4,17 @@ $(document).ready(function () {
 
     function fetchVideosData() {
         return $.getJSON('videos.json', function (data) {
-            videosData = data;
-            videosData.forEach(video => {
+            data.forEach(video => {
                 let daysSincePublished = getDaysSincePublished(video.publishedAt);
                 let evergreen = 0;
-                if (daysSincePublished > 0 && video.viewCount > 0) {
-                    evergreen = Math.floor(video.viewCount / daysSincePublished);
+                if (daysSincePublished > 7 && video.viewCount > 0) {
+                    evergreen = Math.floor(video.viewCount / daysSincePublished * 0.6 + video.commentCount / daysSincePublished * 0.2 + video.likeCount / daysSincePublished * 0.2);
                 }
                 video.evergreen = evergreen;
                 video.daysSincePublished = daysSincePublished;
                 video.fresh = daysSincePublished < 1;
             });
+            videosData = data;
             updateCounters(videosData);
             init();
         });
@@ -25,12 +25,6 @@ $(document).ready(function () {
         tableBody.empty();
 
         videos.forEach(video => {
-            let fresh = getDaysSincePublished(video.updated_at) < 1
-            let daysSincePublished = getDaysSincePublished(video.publishedAt);
-            let evergreen = 0;
-            if (daysSincePublished > 0 && video.viewCount > 0) {
-                evergreen = Math.floor(video.viewCount / daysSincePublished);
-            }
             tableBody.append(`
                 <tr>
                <td>
@@ -44,7 +38,7 @@ $(document).ready(function () {
                     ${video.title}
                 </a>
                 <a href="https://studio.youtube.com/video/${video.videoId}/edit" target="_blank" class="btn btn-sm">
-                    ${fresh ? '<i class="bi bi-pencil-fill"></i>' : '<i class="bi bi-pencil"></i>'}
+                    ${video.fresh ? '<i class="bi bi-pencil-fill"></i>' : '<i class="bi bi-pencil"></i>'}
                 </a>
             </div>
 
@@ -53,13 +47,12 @@ $(document).ready(function () {
         </div>
     </div>
 </td>
-
                     <td>${formatDuration(video.duration)}</td>
                     <td>${video.viewCount || 0}</td>
                     <td>${video.likeCount || 0}</td>
                     <td>${video.commentCount || 0}</td>
-                    <td>${evergreen}</td>
-                    <td>${daysSincePublished}</td>
+                    <td>${video.evergreen}</td>
+                    <td>${video.daysSincePublished}</td>
                     <td>${formatPublishedDate(video.publishedAt)}</td>
                 </tr>
             `);
@@ -164,9 +157,16 @@ $(document).ready(function () {
 
     function updateTable() {
         const titleSearch = $('#titleSearch').val();
+
+        console.log(`videosData`);
+        console.log(videosData);
         let filteredVideos = filterVideos(videosData, titleSearch);
+        console.log(`filteredVideos`);
+        console.log(filteredVideos);
         if (currentSort.field) {
             filteredVideos = sortVideos(filteredVideos, currentSort.field, currentSort.ascending);
+            console.log(`filteredVideos2`);
+            console.log(filteredVideos);
         }
         renderTable(filteredVideos);
         updateSortIndicators();
@@ -332,7 +332,7 @@ $(document).ready(function () {
             const sortColumn = currentSort.field === 'duration' ? '#sortByDuration' :
                 currentSort.field === 'viewCount' ? '#sortByViewCount' :
                     currentSort.field === 'likeCount' ? '#sortByLikeCount' :
-                        currentSort.field === 'awrViewCount' ? '#sortByAwrViewCount' :
+                        currentSort.field === 'evergreen' ? '#sortByAwrViewCount' :
                             currentSort.field === 'commentCount' ? '#sortByCommentCount' : '#sortByCommentPublishedAt';
 
             if (sortColumn) {
@@ -355,8 +355,7 @@ $(document).ready(function () {
             updateTable();
         });
         $('#sortByAwrViewCount').on('click', function () {
-            console.log(123);
-            currentSort.field = 'awrViewCount';
+            currentSort.field = 'evergreen';
             currentSort.ascending = !currentSort.ascending;
             updateTable();
         });
