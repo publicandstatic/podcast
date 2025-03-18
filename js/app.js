@@ -12,7 +12,7 @@ $(document).ready(function () {
                 }
                 video.evergreen = evergreen;
                 video.daysSincePublished = daysSincePublished;
-                video.fresh = daysSincePublished < 1;
+                video.fresh = getDaysSincePublished(video.updated_at) < 1;
             });
             videosData = data;
             updateCounters(videosData);
