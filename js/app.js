@@ -3,7 +3,8 @@ $(document).ready(function () {
     let videosData = [];
     let tagCounts = {};
     let tagViews = {};
-    let topTags = {}
+    let topTags = {};
+    
     function getRandomBetween(min, max) {
         return Math.floor(Math.random() * (max - min - 1)) + min + 1;
     }
@@ -23,11 +24,11 @@ $(document).ready(function () {
                 });
             });
 
-            let tagCountsForFilterMin = getRandomBetween(2, 10);
-            let tagCountsForFilterMax = getRandomBetween(2, 10);
+            let tagCountsForFilterMin = getRandomBetween(1, 5);
+            let tagCountsForFilterMax = getRandomBetween(5, 10);
 
             let filteredTagCounts = Object.entries(tagCounts)
-                .filter(([tag, count]) => count < tagCountsForFilter * 1.25 &&  count > tagCountsForFilter * 0.75)
+                .filter(([tag, count]) => count < tagCountsForFilterMax &&  count > tagCountsForFilterMin)
                 .reduce((acc, [tag, count]) => {
                     acc[tag] = count;
                     return acc;
@@ -42,7 +43,6 @@ $(document).ready(function () {
 
             tagScores.sort((a, b) => b.score - a.score);
             topTags = tagScores.slice(0, 7);
-            console.log(topTags);
 
             videosData = data;
             updateCounters(videosData);
