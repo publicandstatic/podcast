@@ -7,7 +7,7 @@ $(document).ready(function () {
             data.forEach(video => {
                 let daysSincePublished = getDaysSincePublished(video.publishedAt);
                 let evergreen = 0;
-                if (daysSincePublished > 0) {
+                if (daysSincePublished > 7) {
                     evergreen = Math.floor(video.viewCount / daysSincePublished + video.commentCount / daysSincePublished + video.likeCount / daysSincePublished);
                 }
                 video.evergreen = evergreen;
