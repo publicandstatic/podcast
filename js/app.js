@@ -1,41 +1,48 @@
 $(document).ready(function () {
     let currentSort = {field: 'publishedAt', ascending: false};
     let videosData = [];
+    let tagCounts = {};
 
     function fetchVideosData() {
         return $.getJSON('videos.json', function (data) {
-            let maxViewsPerDay = 0;
-            let maxLikeRate = 0;
-            let maxCommentRate = 0;
             data.forEach(video => {
-                let daysSincePublished = getDaysSincePublished(video.publishedAt);
-                if (daysSincePublished != 0) {
-                    maxViewsPerDay = Math.max(video.viewCount / daysSincePublished, maxViewsPerDay);
-                }
-                if (video.viewCount != 0) {
-                    maxLikeRate = Math.max(video.likeCount / video.viewCount, maxLikeRate);
-                    maxCommentRate = Math.max(video.commentCount / video.viewCount, maxCommentRate);
-                }
-            });
-            data.forEach(video => {
-                let daysSincePublished = getDaysSincePublished(video.publishedAt);
-                let evergreen = 0;
-                if (daysSincePublished > 0 && video.viewCount > 0) {
-                    if (maxViewsPerDay > 0) {
-                        evergreen += 2 * video.viewCount / daysSincePublished / maxViewsPerDay;
-                    }
-                    if (maxLikeRate > 0) {
-                        evergreen += 3 * video.likeCount / video.viewCount / maxLikeRate;
-                    }
-                    if (maxCommentRate > 0) {
-                        evergreen +=  5 * video.commentCount / video.viewCount / maxCommentRate;
-                    }
-                    evergreen = Math.floor(evergreen);
-                }
-                video.evergreen = evergreen;
-                video.daysSincePublished = daysSincePublished;
+                video.daysSincePublished = getDaysSincePublished(video.publishedAt);
                 video.fresh = getDaysSincePublished(video.updated_at) < 1;
+                let tagsArray = JSON.parse(video.tags);
+                tagsArray.forEach(tag => {
+                    tag = tag.trim().toLowerCase();
+                    if (tag) {
+                        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                    }
+                });
             });
+
+            // Перетворюємо об'єкт у масив та сортуємо теги за частотою використання
+            let sortedTagEntries = Object.entries(tagCounts)
+                .filter(([tag, count]) => count > 1) // Виключаємо теги, які зустрічаються лише 1 раз
+                .sort((a, b) => a[1] - b[1]); // Від меншого до більшого
+
+// Визначаємо мінімальне та максимальне значення
+            let minCount = sortedTagEntries.length > 0 ? sortedTagEntries[0][1] : 0;
+            let maxCount = sortedTagEntries.length > 0 ? sortedTagEntries[sortedTagEntries.length - 1][1] : 0;
+
+// Фільтруємо, щоб не брати мінімальне (якщо >1) і максимальне значення
+            let filteredTags = sortedTagEntries.filter(([tag, count]) => count !== minCount && count !== maxCount);
+
+// Перераховуємо середній індекс після фільтрації
+            let middleIndex = Math.floor(filteredTags.length / 2);
+
+// Витягуємо 10 тегів навколо середини (по 5 в обидві сторони)
+            let midTags = filteredTags.slice(Math.max(0, middleIndex - 5), middleIndex + 5);
+
+// Формуємо об'єкт із середніми тегами
+            let midTagCounts = midTags.reduce((acc, [tag, count]) => {
+                acc[tag] = count;
+                return acc;
+            }, {});
+
+// Виведення в консоль
+            console.log(midTagCounts);
             videosData = data;
             updateCounters(videosData);
             init();
@@ -73,7 +80,6 @@ $(document).ready(function () {
                     <td>${video.viewCount || 0}</td>
                     <td>${video.likeCount || 0}</td>
                     <td>${video.commentCount || 0}</td>
-                    <td>${video.evergreen}</td>
                     <td>${video.daysSincePublished}</td>
                     <td>${formatPublishedDate(video.publishedAt)}</td>
                 </tr>
@@ -82,19 +88,16 @@ $(document).ready(function () {
     }
 
     function getDaysSincePublished(dateString) {
-        const date = new Date(dateString); // Перетворюємо строку у Date
-        const now = new Date(); // Поточний час
+        const date = new Date(dateString);
+        const now = new Date();
 
-        // Встановлюємо Київський часовий пояс (Europe/Kiev)
         const options = {timeZone: "Europe/Kiev"};
         const kievNow = new Date(now.toLocaleString("en-US", options));
         const kievDate = new Date(date.toLocaleString("en-US", options));
 
-        // Рахуємо кількість днів між датами
         const diffTime = kievNow - kievDate;
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-        return diffDays;
+        return Math.floor(diffTime / (1000 * 60 * 60 * 24));;
     }
 
 
@@ -186,16 +189,9 @@ $(document).ready(function () {
 
     function updateTable() {
         const titleSearch = $('#titleSearch').val();
-
-        console.log(`videosData`);
-        console.log(videosData);
         let filteredVideos = filterVideos(videosData, titleSearch);
-        console.log(`filteredVideos`);
-        console.log(filteredVideos);
         if (currentSort.field) {
             filteredVideos = sortVideos(filteredVideos, currentSort.field, currentSort.ascending);
-            console.log(`filteredVideos2`);
-            console.log(filteredVideos);
         }
         renderTable(filteredVideos);
         updateSortIndicators();
