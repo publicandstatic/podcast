@@ -4,11 +4,33 @@ $(document).ready(function () {
 
     function fetchVideosData() {
         return $.getJSON('videos.json', function (data) {
+            let maxViewsPerDay = 0;
+            let maxLikeRate = 0;
+            let maxCommentRate = 0;
+            data.forEach(video => {
+                let daysSincePublished = getDaysSincePublished(video.publishedAt);
+                if (daysSincePublished != 0) {
+                    maxViewsPerDay = Math.max(video.viewCount / daysSincePublished, maxViewsPerDay);
+                }
+                if (video.viewCount != 0) {
+                    maxLikeRate = Math.max(video.likeCount / video.viewCount, maxLikeRate);
+                    maxCommentRate = Math.max(video.commentCount / video.viewCount, maxCommentRate);
+                }
+            });
             data.forEach(video => {
                 let daysSincePublished = getDaysSincePublished(video.publishedAt);
                 let evergreen = 0;
-                if (daysSincePublished > 7) {
-                    evergreen = Math.floor(video.viewCount / daysSincePublished + video.commentCount / daysSincePublished + video.likeCount / daysSincePublished);
+                if (daysSincePublished > 0 && video.viewCount > 0) {
+                    if (maxViewsPerDay > 0) {
+                        evergreen += 2 * video.viewCount / daysSincePublished / maxViewsPerDay;
+                    }
+                    if (maxLikeRate > 0) {
+                        evergreen += 3 * video.likeCount / video.viewCount / maxLikeRate;
+                    }
+                    if (maxCommentRate > 0) {
+                        evergreen +=  5 * video.commentCount / video.viewCount / maxCommentRate;
+                    }
+                    evergreen = Math.floor(evergreen);
                 }
                 video.evergreen = evergreen;
                 video.daysSincePublished = daysSincePublished;
