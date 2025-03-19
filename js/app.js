@@ -4,6 +4,9 @@ $(document).ready(function () {
     let tagCounts = {};
     let tagViews = {};
     let topTags = {}
+    function getRandomBetween(min, max) {
+        return Math.floor(Math.random() * (max - min - 1)) + min + 1;
+    }
 
     function fetchVideosData() {
         return $.getJSON('videos.json', function (data) {
@@ -20,8 +23,11 @@ $(document).ready(function () {
                 });
             });
 
+            let tagCountsForFilterMin = getRandomBetween(2, 10);
+            let tagCountsForFilterMax = getRandomBetween(2, 10);
+
             let filteredTagCounts = Object.entries(tagCounts)
-                .filter(([tag, count]) => count > 2)
+                .filter(([tag, count]) => count < tagCountsForFilter * 1.25 &&  count > tagCountsForFilter * 0.75)
                 .reduce((acc, [tag, count]) => {
                     acc[tag] = count;
                     return acc;
