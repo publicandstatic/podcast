@@ -2,6 +2,8 @@ $(document).ready(function () {
     let currentSort = {field: 'publishedAt', ascending: false};
     let videosData = [];
     let tagCounts = {};
+    let tagViews = {};
+    let topTags = {}
 
     function fetchVideosData() {
         return $.getJSON('videos.json', function (data) {
@@ -13,36 +15,29 @@ $(document).ready(function () {
                     tag = tag.trim().toLowerCase();
                     if (tag) {
                         tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                        tagViews[tag] = (tagViews[tag] || 0) + video.viewCount;
                     }
                 });
             });
 
-            // Перетворюємо об'єкт у масив та сортуємо теги за частотою використання
-            let sortedTagEntries = Object.entries(tagCounts)
-                .filter(([tag, count]) => count > 1) // Виключаємо теги, які зустрічаються лише 1 раз
-                .sort((a, b) => a[1] - b[1]); // Від меншого до більшого
+            let filteredTagCounts = Object.entries(tagCounts)
+                .filter(([tag, count]) => count > 2)
+                .reduce((acc, [tag, count]) => {
+                    acc[tag] = count;
+                    return acc;
+                }, {});
 
-// Визначаємо мінімальне та максимальне значення
-            let minCount = sortedTagEntries.length > 0 ? sortedTagEntries[0][1] : 0;
-            let maxCount = sortedTagEntries.length > 0 ? sortedTagEntries[sortedTagEntries.length - 1][1] : 0;
+            let tagScores = Object.keys(filteredTagCounts).map(tag => ({
+                tag: tag,
+                count: tagCounts[tag],
+                totalViews: tagViews[tag],
+                score:  tagViews[tag] / tagCounts[tag]
+            }));
 
-// Фільтруємо, щоб не брати мінімальне (якщо >1) і максимальне значення
-            let filteredTags = sortedTagEntries.filter(([tag, count]) => count !== minCount && count !== maxCount);
+            tagScores.sort((a, b) => b.score - a.score);
+            topTags = tagScores.slice(0, 7);
+            console.log(topTags);
 
-// Перераховуємо середній індекс після фільтрації
-            let middleIndex = Math.floor(filteredTags.length / 2);
-
-// Витягуємо 10 тегів навколо середини (по 5 в обидві сторони)
-            let midTags = filteredTags.slice(Math.max(0, middleIndex - 5), middleIndex + 5);
-
-// Формуємо об'єкт із середніми тегами
-            let midTagCounts = midTags.reduce((acc, [tag, count]) => {
-                acc[tag] = count;
-                return acc;
-            }, {});
-
-// Виведення в консоль
-            console.log(midTagCounts);
             videosData = data;
             updateCounters(videosData);
             init();
@@ -253,6 +248,10 @@ $(document).ready(function () {
                     console.error("Error parsing tags: ", e);
                 }
             }
+        });
+
+        topTags.forEach(tag => {
+            words2.add(tag.tag);
         });
 
         let buttonContainer2 = $('#mention-buttons2');
