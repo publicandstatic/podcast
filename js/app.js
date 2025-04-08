@@ -13,7 +13,8 @@ $(document).ready(function () {
         return $.getJSON('videos.json', function (data) {
             data.forEach(video => {
                 video.daysSincePublished = getDaysSincePublished(video.publishedAt);
-                video.fresh = getDaysSincePublished(video.updated_at) < 1;
+                video.daysSinceUpdated = getDaysSincePublished(video.updated_at);
+                video.fresh = video.daysSinceUpdated < 1;
                 let tagsArray = JSON.parse(video.tags);
                 tagsArray.forEach(tag => {
                     tag = tag.trim().toLowerCase();
@@ -82,6 +83,7 @@ $(document).ready(function () {
                     <td>${video.likeCount || 0}</td>
                     <td>${video.commentCount || 0}</td>
                     <td>${video.daysSincePublished}</td>
+                    <td>${video.daysSinceUpdated}</td>
                     <td>${formatPublishedDate(video.publishedAt)}</td>
                 </tr>
             `);
@@ -118,6 +120,9 @@ $(document).ready(function () {
     function sortVideos(videos, field, ascending) {
         return videos.sort((a, b) => {
             if (field === 'publishedAt') {
+                return ascending ? new Date(a[field]) - new Date(b[field]) : new Date(b[field]) - new Date(a[field]);
+            }
+            if (field === 'updated_at') {
                 return ascending ? new Date(a[field]) - new Date(b[field]) : new Date(b[field]) - new Date(a[field]);
             }
             if (a[field] > b[field]) return ascending ? 1 : -1;
@@ -363,7 +368,7 @@ $(document).ready(function () {
                 currentSort.field === 'viewCount' ? '#sortByViewCount' :
                     currentSort.field === 'likeCount' ? '#sortByLikeCount' :
                         currentSort.field === 'evergreen' ? '#sortByAwrViewCount' :
-                            currentSort.field === 'commentCount' ? '#sortByCommentCount' : '#sortByCommentPublishedAt';
+                            currentSort.field === 'commentCount' ? '#sortByCommentCount' : '#sortByPublishedAt';
 
             if (sortColumn) {
                 $(sortColumn).addClass(currentSort.ascending ? 'asc' : 'desc');
@@ -399,13 +404,18 @@ $(document).ready(function () {
             currentSort.ascending = !currentSort.ascending;
             updateTable();
         });
-        $('#sortByCommentPublishedAt').on('click', function () {
+        $('#sortByPublishedAt').on('click', function () {
             currentSort.field = 'publishedAt';
             currentSort.ascending = !currentSort.ascending;
             updateTable();
         });
         $('#sortByDaysAgo').on('click', function () {
             currentSort.field = 'publishedAt';
+            currentSort.ascending = !currentSort.ascending;
+            updateTable();
+        });
+        $('#sortByUpdatedAt').on('click', function () {
+            currentSort.field = 'updated_at';
             currentSort.ascending = !currentSort.ascending;
             updateTable();
         });
