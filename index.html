@@ -35,61 +35,168 @@
 <div class="container my-4">
     <h1 class="text-center">Ігрові балачки</h1>
     <p>
-        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <button class="btn btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             Аналітика
         </button>
     </p>
     <div class="collapse" id="collapseExample">
-        <div class="card card-body" id="collapseExampleCard">
-            <div class="row col-12 justify-content-center counters text-center" id="counters">
-                <div class="col-12 col-md-4">
-                    <span id="totalVideos">0</span>
-                    <p class="">Всього відео</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="totalDuration">0</span>
-                    <p class="">Загальна тривалість</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="totalDays">0</span>
-                    <p class="">Всього днів</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="totalViewCount">0</span>
-                    <p class="">Загальна кількість переглядів</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="totalLikeCount">0</span>
-                    <p class="">Загальна кількість вподобань</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="totalCommentCount">0</span>
-                    <p class="">Загальна кількість коментарів</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="awrViewCount">0</span>
-                    <p class="">Середньо переглядів за добу</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="awrLikeCount">0</span>
-                    <p class="">Середньо вподобань за добу</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="awrCommentCount">0</span>
-                    <p class="">Загальна кількість коментарів</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="awr2ViewCount">0</span>
-                    <p class="">Середньо переглядів на відео</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="awr2LikeCount">0</span>
-                    <p class="">Середньо вподобань на відео</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <span id="awr2CommentCount">0</span>
-                    <p class="">Середньо коментарів на відео</p>
-                </div>
+        <div class="row col-12 justify-content-center counters text-center" id="counters">
+            <div class="col-12 col-md-12">
+                <h4 class="">За весь час:</h4>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalVideos">0</span>
+                <p class="">Всього відео</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalDuration">0</span>
+                <p class="">Загальна тривалість</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalDays">0</span>
+                <p class="">Всього днів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalViewCount">0</span>
+                <p class="">Загальна кількість переглядів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalLikeCount">0</span>
+                <p class="">Загальна кількість вподобань</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalCommentCount">0</span>
+                <p class="">Загальна кількість коментарів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awrViewCount">0</span>
+                <p class="">Середньо переглядів за добу</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awrLikeCount">0</span>
+                <p class="">Середньо вподобань за добу</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awrCommentCount">0</span>
+                <p class="">Загальна кількість коментарів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awr2ViewCount">0</span>
+                <p class="">Середньо переглядів на відео</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awr2LikeCount">0</span>
+                <p class="">Середньо вподобань на відео</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awr2CommentCount">0</span>
+                <p class="">Середньо коментарів на відео</p>
+            </div>
+
+
+            <div class="col-12 col-md-12">
+                <h4 class="">За 30 днів:</h4>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalVideos30">0</span>
+                <p class="">Всього відео</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalDuration30">0</span>
+                <p class="">Загальна тривалість</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalDays30">0</span>
+                <p class="">Всього днів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalViewCount30">0</span>
+                <p class="">Загальна кількість переглядів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalLikeCount30">0</span>
+                <p class="">Загальна кількість вподобань</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalCommentCount30">0</span>
+                <p class="">Загальна кількість коментарів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awrViewCount30">0</span>
+                <p class="">Середньо переглядів за добу</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awrLikeCount30">0</span>
+                <p class="">Середньо вподобань за добу</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awrCommentCount30">0</span>
+                <p class="">Загальна кількість коментарів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awr2ViewCount30">0</span>
+                <p class="">Середньо переглядів на відео</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awr2LikeCount30">0</span>
+                <p class="">Середньо вподобань на відео</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awr2CommentCount30">0</span>
+                <p class="">Середньо коментарів на відео</p>
+            </div>
+
+
+            <div class="col-12 col-md-12">
+                <h4 class="">За 7 днів:</h4>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalVideos7">0</span>
+                <p class="">Всього відео</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalDuration7">0</span>
+                <p class="">Загальна тривалість</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalDays7">0</span>
+                <p class="">Всього днів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalViewCount7">0</span>
+                <p class="">Загальна кількість переглядів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalLikeCount7">0</span>
+                <p class="">Загальна кількість вподобань</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="totalCommentCount7">0</span>
+                <p class="">Загальна кількість коментарів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awrViewCount7">0</span>
+                <p class="">Середньо переглядів за добу</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awrLikeCount7">0</span>
+                <p class="">Середньо вподобань за добу</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awrCommentCount7">0</span>
+                <p class="">Загальна кількість коментарів</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awr2ViewCount7">0</span>
+                <p class="">Середньо переглядів на відео</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awr2LikeCount7">0</span>
+                <p class="">Середньо вподобань на відео</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span id="awr2CommentCount7">0</span>
+                <p class="">Середньо коментарів на відео</p>
             </div>
         </div>
     </div>

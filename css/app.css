@@ -28,8 +28,6 @@ h1 {
 .counters {
     font-size: 1.25rem;
     font-weight: 700;
-    -webkit-filter: drop-shadow(0px 0px 4px #1f222c);
-    filter: drop-shadow(0px 0px 4px #1f222c);
 }
 
 .form-select {
@@ -258,13 +256,11 @@ thead.sticky {
 }
 
 
-#collapseExampleCard {
+#collapseExample {
     background: rgba(62, 71, 95, 1) !important;
-    padding: 0;
+    -webkit-filter: drop-shadow(0px 0px 4px #1f222c);
+    filter: drop-shadow(0px 0px 4px #1f222c);
 }
 
-#counters {
-    background: rgba(62, 71, 95, 1) !important;
-}
 
 

@@ -169,6 +169,62 @@ $(document).ready(function () {
         $('#awr2ViewCount').text(awr2ViewCount);
         $('#awr2LikeCount').text(awr2LikeCount);
         $('#awr2CommentCount').text(awr2CommentCount);
+
+
+        const filterRecent = (days) => videos.filter(video => (now - new Date(video.publishedAt)) <= days * 24 * 60 * 60 * 1000);
+
+        const getStats = (vids, days) => {
+            let count = vids.length;
+            let duration = formatDuration(vids.reduce((sum, v) => sum + (v.duration || 0), 0));
+            let views = vids.reduce((sum, v) => sum + (v.viewCount || 0), 0);
+            let likes = vids.reduce((sum, v) => sum + (v.likeCount || 0), 0);
+            let comments = vids.reduce((sum, v) => sum + (v.commentCount || 0), 0);
+
+            return {
+                count,
+                duration,
+                views,
+                likes,
+                comments,
+                days: days,
+                awrView: Math.floor(views / Math.max(1, days)),
+                awrLike: Math.floor(likes / Math.max(1, days)),
+                awrComment: Math.floor(comments / Math.max(1, days)),
+                awr2View: Math.floor(views / Math.max(1, count)),
+                awr2Like: Math.floor(likes / Math.max(1, count)),
+                awr2Comment: Math.floor(comments / Math.max(1, count)),
+            };
+        };
+
+        const stats30 = getStats(filterRecent(30), 30);
+        const stats7 = getStats(filterRecent(7), 7);
+
+
+        $('#totalVideos30').text(stats30.count);
+        $('#totalDuration30').text(stats30.duration);
+        $('#totalDays30').text(stats30.days);
+        $('#totalViewCount30').text(stats30.views);
+        $('#totalLikeCount30').text(stats30.likes);
+        $('#totalCommentCount30').text(stats30.comments);
+        $('#awrViewCount30').text(stats30.awrView);
+        $('#awrLikeCount30').text(stats30.awrLike);
+        $('#awrCommentCount30').text(stats30.awrComment);
+        $('#awr2ViewCount30').text(stats30.awr2View);
+        $('#awr2LikeCount30').text(stats30.awr2Like);
+        $('#awr2CommentCount30').text(stats30.awr2Comment);
+
+        $('#totalVideos7').text(stats7.count);
+        $('#totalDuration7').text(stats7.duration);
+        $('#totalDays7').text(stats7.days);
+        $('#totalViewCount7').text(stats7.views);
+        $('#totalLikeCount7').text(stats7.likes);
+        $('#totalCommentCount7').text(stats7.comments);
+        $('#awrViewCount7').text(stats7.awrView);
+        $('#awrLikeCount7').text(stats7.awrLike);
+        $('#awrCommentCount7').text(stats7.awrComment);
+        $('#awr2ViewCount7').text(stats7.awr2View);
+        $('#awr2LikeCount7').text(stats7.awr2Like);
+        $('#awr2CommentCount7').text(stats7.awr2Comment);
     }
 
     function filterVideos(videos, titleSearch) {
