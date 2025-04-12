@@ -253,7 +253,7 @@ $(document).ready(function () {
         compareMetrics(stats30, stats60_30, '30');
 
         const stats7 = getStatsForPeriod(daysAgo(7), now, 7);
-        const stats14_7 = getStatsForPeriod(daysAgo(14), daysAgo(7));
+        const stats14_7 = getStatsForPeriod(daysAgo(14), daysAgo(7), 7);
         compareMetrics(stats7, stats14_7, '7');
 
     }
