@@ -268,9 +268,9 @@ $(document).ready(function () {
         let buttonContainer2 = $('#mention-buttons2');
         if (!buttonContainer2.length) {
             if (words2.size > 8) {
-                $('#counters').after('<div id="mention-buttons2" class="m-2 d-flex flex-wrap justify-content-between"></div>');
+                $('#searchHelper').after('<div id="mention-buttons2" class="m-2 d-flex flex-wrap justify-content-between"></div>');
             } else {
-                $('#counters').after('<div id="mention-buttons2" class="m-2 d-flex flex-wrap justify-content-center"></div>');
+                $('#searchHelper').after('<div id="mention-buttons2" class="m-2 d-flex flex-wrap justify-content-center"></div>');
             }
             buttonContainer2 = $('#mention-buttons2');
         }

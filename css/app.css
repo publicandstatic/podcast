@@ -258,4 +258,13 @@ thead.sticky {
 }
 
 
+#collapseExampleCard {
+    background: rgba(62, 71, 95, 1) !important;
+    padding: 0;
+}
+
+#counters {
+    background: rgba(62, 71, 95, 1) !important;
+}
+
 
