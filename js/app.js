@@ -91,23 +91,20 @@ $(document).ready(function () {
     }
 
     function getDaysSincePublished(dateString) {
-        const date = new Date(dateString);
         const now = new Date();
+        const published = new Date(dateString);
 
-        const options = {timeZone: "Europe/Kiev"};
-        const kievNow = new Date(now.toLocaleString("uk-UA", options));
-        const kievDate = new Date(date.toLocaleString("uk-UA", options));
+        // Різниця в мілісекундах
+        const diffTime = now.getTime() - published.getTime();
 
-        const diffTime = kievNow - kievDate;
-
-        return Math.floor(diffTime / (1000 * 60 * 60 * 24));;
+        // Переводимо в дні
+        return Math.floor(diffTime / (1000 * 60 * 60 * 24));
     }
 
 
     function formatPublishedDate(dateString) {
         const date = new Date(dateString);
-        let localString = date.toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv' });
-        return localString.replace(',', '');
+        return date.toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv' });
     }
 
     function sortVideos(videos, field, ascending) {
@@ -164,7 +161,7 @@ $(document).ready(function () {
         if (newestVideo?.updated_at) {
             let updatedDate = new Date(newestVideo.updated_at);
             let localString = updatedDate.toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv' });
-            $('#lastUpdated').text(localString.replace(',', ''));
+            $('#lastUpdated').text(localString);
         } else {
             $('#lastUpdated').text('—');
         }
