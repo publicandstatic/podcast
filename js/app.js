@@ -135,8 +135,8 @@ $(document).ready(function () {
 
         console.log(unfilteredVideos);
 
-        let totalTotalVideos = unfilteredVideos.length;
-        let totalTotalDuration = formatDuration(unfilteredVideos.reduce((sum, video) => sum + (video.duration || 0), 0));
+        let totalUnfilteredVideos = unfilteredVideos.length;
+        let totalUnfilteredDuration = formatDuration(unfilteredVideos.reduce((sum, video) => sum + (video.duration || 0), 0));
         let oldestDate = unfilteredVideos.reduce((oldest, video) => {
             let videoDate = new Date(video.publishedAt);
             return videoDate < oldest ? videoDate : oldest;
@@ -162,8 +162,8 @@ $(document).ready(function () {
         let awr2LikeCount = Math.floor(totalLikeCount / totalVideos);
         let awr2CommentCount = Math.floor(totalCommentCount / totalVideos);
 
-        $('#totalVideos').text(totalTotalVideos + ' (' + (totalTotalVideos - totalVideos) +')');
-        $('#totalDuration').text(totalTotalDuration + ' (' + (formatDuration(unfilteredVideos.reduce((sum, video) => sum + (video.duration || 0), 0)-videos.reduce((sum, video) => sum + (video.duration || 0), 0))) +')');
+        $('#totalVideos').text(totalUnfilteredVideos + ' (' + (totalUnfilteredVideos - totalVideos) +')');
+        $('#totalDuration').text(totalUnfilteredDuration + ' (' + (formatDuration(unfilteredVideos.reduce((sum, video) => sum + (video.duration || 0), 0)-videos.reduce((sum, video) => sum + (video.duration || 0), 0))) +')');
         $('#totalDays').text(totalDays);
         $('#totalViewCount').text(totalViewCount);
         $('#totalLikeCount').text(totalLikeCount);
@@ -206,11 +206,10 @@ $(document).ready(function () {
             function set(id, val, prev) {
                 $('#' + id + suffix).text(val + arrow(val, prev));
             }
-
-            $('#totalVideos' + suffix).text(current.count + arrow(current.count, previous.count));
-            const durSecCur = parseDurationToSeconds(current.duration);
-            const durSecPrev = parseDurationToSeconds(previous.duration);
-            $('#totalDuration' + suffix).text(current.duration + arrow(durSecCur, durSecPrev));
+            $('#totalVideos' + suffix).text(current.countTotal + ' (' + current.countSponsored + ')' + arrow(current.countTotal, previous.countTotal));
+            const durSecCur = parseDurationToSeconds(current.durationTotal);
+            const durSecPrev = parseDurationToSeconds(previous.durationTotal);
+            $('#totalDuration' + suffix).text(current.durationTotal + ' (' + current.durationSponsored + ')' + arrow(durSecCur, durSecPrev));
             set('totalDays', current.days, previous.days);
             set('totalViewCount', current.views, previous.views);
             set('totalLikeCount', current.likes, previous.likes);
@@ -230,11 +229,21 @@ $(document).ready(function () {
                 return date >= startDate && date < endDate;
             });
 
+            let vidsUnfiltered = unfilteredVideos.filter(video => {
+                let date = new Date(video.publishedAt);
+                return date >= startDate && date < endDate;
+            });
+
             let count = vids.length;
             let duration = formatDuration(vids.reduce((sum, v) => sum + (v.duration || 0), 0));
             let views = vids.reduce((sum, v) => sum + (v.viewCount || 0), 0);
             let likes = vids.reduce((sum, v) => sum + (v.likeCount || 0), 0);
             let comments = vids.reduce((sum, v) => sum + (v.commentCount || 0), 0);
+
+            let countTotal = vidsUnfiltered.length;
+            let durationTotal = formatDuration(vidsUnfiltered.reduce((sum, v) => sum + (v.duration || 0), 0));
+            let countSponsored = vidsUnfiltered.length - vids.length;
+            let durationSponsored = formatDuration(vidsUnfiltered.reduce((sum, v) => sum + (v.duration || 0), 0) - vids.reduce((sum, v) => sum + (v.duration || 0), 0));
 
             return {
                 count,
@@ -249,6 +258,10 @@ $(document).ready(function () {
                 awr2View: Math.floor(views / Math.max(1, count)),
                 awr2Like: Math.floor(likes / Math.max(1, count)),
                 awr2Comment: Math.floor(comments / Math.max(1, count)),
+                countTotal,
+                durationTotal,
+                countSponsored,
+                durationSponsored,
             };
         }
 
