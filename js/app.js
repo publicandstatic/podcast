@@ -131,16 +131,21 @@ $(document).ready(function () {
         });
     }
 
-    function updateCounters(videos) {
+    function updateCounters(unfilteredVideos) {
 
-        console.log(videos);
-        let totalVideos = videos.length;
-        let totalDuration = formatDuration(videos.reduce((sum, video) => sum + (video.duration || 0), 0));
+        console.log(unfilteredVideos);
 
-        let oldestDate = videos.reduce((oldest, video) => {
+        let totalTotalVideos = unfilteredVideos.length;
+        let totalTotalDuration = formatDuration(unfilteredVideos.reduce((sum, video) => sum + (video.duration || 0), 0));
+        let oldestDate = unfilteredVideos.reduce((oldest, video) => {
             let videoDate = new Date(video.publishedAt);
             return videoDate < oldest ? videoDate : oldest;
         }, new Date());
+
+        let videos = unfilteredVideos.filter(video => video.viewCount > 0);
+        console.log(videos);
+        let totalVideos = videos.length;
+        let totalDuration = formatDuration(videos.reduce((sum, video) => sum + (video.duration || 0), 0));
 
         let now = new Date();
         let totalDays = Math.floor((now - oldestDate) / (1000 * 60 * 60 * 24));
@@ -157,8 +162,8 @@ $(document).ready(function () {
         let awr2LikeCount = Math.floor(totalLikeCount / totalVideos);
         let awr2CommentCount = Math.floor(totalCommentCount / totalVideos);
 
-        $('#totalVideos').text(totalVideos);
-        $('#totalDuration').text(totalDuration);
+        $('#totalVideos').text(totalTotalVideos);
+        $('#totalDuration').text(totalTotalDuration);
         $('#totalDays').text(totalDays);
         $('#totalViewCount').text(totalViewCount);
         $('#totalLikeCount').text(totalLikeCount);
