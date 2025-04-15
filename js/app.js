@@ -136,6 +136,8 @@ $(document).ready(function () {
         console.log(unfilteredVideos);
 
         let totalUnfilteredVideos = unfilteredVideos.length;
+
+
         let totalUnfilteredDuration = formatDuration(unfilteredVideos.reduce((sum, video) => sum + (video.duration || 0), 0));
         let oldestDate = unfilteredVideos.reduce((oldest, video) => {
             let videoDate = new Date(video.publishedAt);
@@ -161,6 +163,12 @@ $(document).ready(function () {
         let awr2ViewCount = Math.floor(totalViewCount / totalVideos);
         let awr2LikeCount = Math.floor(totalLikeCount / totalVideos);
         let awr2CommentCount = Math.floor(totalCommentCount / totalVideos);
+
+        let filteredVideos = unfilteredVideos.filter(video => video.updated_at);
+        let newestVideo = filteredVideos.reduce((latest, current) => {
+            return new Date(current.updated_at) > new Date(latest.updated_at) ? current : latest;
+        }, filteredVideos[0]);
+        $('#lastUpdated').text(newestVideo?.updated_at || '—');
 
         $('#totalVideos').text(totalUnfilteredVideos + ' (' + (totalUnfilteredVideos - totalVideos) +')');
         $('#totalDuration').text(totalUnfilteredDuration + ' (' + (formatDuration(unfilteredVideos.reduce((sum, video) => sum + (video.duration || 0), 0)-videos.reduce((sum, video) => sum + (video.duration || 0), 0))) +')');
