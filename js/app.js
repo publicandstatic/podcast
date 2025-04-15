@@ -162,8 +162,8 @@ $(document).ready(function () {
         let awr2LikeCount = Math.floor(totalLikeCount / totalVideos);
         let awr2CommentCount = Math.floor(totalCommentCount / totalVideos);
 
-        $('#totalVideos').text(totalTotalVideos);
-        $('#totalDuration').text(totalTotalDuration);
+        $('#totalVideos').text(totalTotalVideos + ' (' + (totalTotalVideos - totalVideos) +')');
+        $('#totalDuration').text(totalTotalDuration + ' (' + (formatDuration(unfilteredVideos.reduce((sum, video) => sum + (video.duration || 0), 0)-videos.reduce((sum, video) => sum + (video.duration || 0), 0))) +')');
         $('#totalDays').text(totalDays);
         $('#totalViewCount').text(totalViewCount);
         $('#totalLikeCount').text(totalLikeCount);
@@ -174,7 +174,6 @@ $(document).ready(function () {
         $('#awr2ViewCount').text(awr2ViewCount);
         $('#awr2LikeCount').text(awr2LikeCount);
         $('#awr2CommentCount').text(awr2CommentCount);
-
 
         const filterRecent = (days) => videos.filter(video => (now - new Date(video.publishedAt)) <= days * 24 * 60 * 60 * 1000);
 
@@ -208,7 +207,7 @@ $(document).ready(function () {
                 $('#' + id + suffix).text(val + arrow(val, prev));
             }
 
-            set('totalVideos', current.count, previous.count);
+            $('#totalVideos' + suffix).text(current.count + arrow(current.count, previous.count));
             const durSecCur = parseDurationToSeconds(current.duration);
             const durSecPrev = parseDurationToSeconds(previous.duration);
             $('#totalDuration' + suffix).text(current.duration + arrow(durSecCur, durSecPrev));
