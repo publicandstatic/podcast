@@ -95,8 +95,8 @@ $(document).ready(function () {
         const now = new Date();
 
         const options = {timeZone: "Europe/Kiev"};
-        const kievNow = new Date(now.toLocaleString("en-US", options));
-        const kievDate = new Date(date.toLocaleString("en-US", options));
+        const kievNow = new Date(now.toLocaleString("uk-UA", options));
+        const kievDate = new Date(date.toLocaleString("uk-UA", options));
 
         const diffTime = kievNow - kievDate;
 
@@ -106,15 +106,8 @@ $(document).ready(function () {
 
     function formatPublishedDate(dateString) {
         const date = new Date(dateString);
-        return date.toLocaleString("uk-UA", {
-            timeZone: "Europe/Kiev",
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        });
+        let localString = date.toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv' });
+        return localString.replace(',', '');
     }
 
     function sortVideos(videos, field, ascending) {
@@ -168,7 +161,13 @@ $(document).ready(function () {
         let newestVideo = filteredVideos.reduce((latest, current) => {
             return new Date(current.updated_at) > new Date(latest.updated_at) ? current : latest;
         }, filteredVideos[0]);
-        $('#lastUpdated').text(newestVideo?.updated_at || '—');
+        if (newestVideo?.updated_at) {
+            let updatedDate = new Date(newestVideo.updated_at);
+            let localString = updatedDate.toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv' });
+            $('#lastUpdated').text(localString.replace(',', ''));
+        } else {
+            $('#lastUpdated').text('—');
+        }
 
         $('#totalVideos').text(totalUnfilteredVideos + ' (' + (totalUnfilteredVideos - totalVideos) +')');
         $('#totalDuration').text(totalUnfilteredDuration + ' (' + (formatDuration(unfilteredVideos.reduce((sum, video) => sum + (video.duration || 0), 0)-videos.reduce((sum, video) => sum + (video.duration || 0), 0))) +')');
