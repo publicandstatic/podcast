@@ -475,8 +475,8 @@ $(document).ready(function () {
             const sortColumn = currentSort.field === 'duration' ? '#sortByDuration' :
                 currentSort.field === 'viewCount' ? '#sortByViewCount' :
                     currentSort.field === 'likeCount' ? '#sortByLikeCount' :
-                        currentSort.field === 'evergreen' ? '#sortByDaysAgo' :
-                            currentSort.field === 'evergreen' ? '#sortByUpdatedAt' :
+                        currentSort.field === 'daysSincePublished' ? '#sortByDaysAgo' :
+                            currentSort.field === 'daysSinceUpdated' ? '#sortByUpdatedAt' :
                                 currentSort.field === 'commentCount' ? '#sortByCommentCount' : '#sortByPublishedAt';
             if (sortColumn) {
                 $(sortColumn).addClass(currentSort.ascending ? 'asc' : 'desc');
@@ -497,11 +497,6 @@ $(document).ready(function () {
             currentSort.ascending = !currentSort.ascending;
             updateTable();
         });
-        $('#sortByAwrViewCount').on('click', function () {
-            currentSort.field = 'evergreen';
-            currentSort.ascending = !currentSort.ascending;
-            updateTable();
-        });
         $('#sortByLikeCount').on('click', function () {
             currentSort.field = 'likeCount';
             currentSort.ascending = !currentSort.ascending;
@@ -518,12 +513,12 @@ $(document).ready(function () {
             updateTable();
         });
         $('#sortByDaysAgo').on('click', function () {
-            currentSort.field = 'publishedAt';
+            currentSort.field = 'daysSincePublished';
             currentSort.ascending = !currentSort.ascending;
             updateTable();
         });
         $('#sortByUpdatedAt').on('click', function () {
-            currentSort.field = 'updated_at';
+            currentSort.field = 'daysSinceUpdated';
             currentSort.ascending = !currentSort.ascending;
             updateTable();
         });
