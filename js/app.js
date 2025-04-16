@@ -475,9 +475,9 @@ $(document).ready(function () {
             const sortColumn = currentSort.field === 'duration' ? '#sortByDuration' :
                 currentSort.field === 'viewCount' ? '#sortByViewCount' :
                     currentSort.field === 'likeCount' ? '#sortByLikeCount' :
-                        currentSort.field === 'evergreen' ? '#sortByAwrViewCount' :
-                            currentSort.field === 'commentCount' ? '#sortByCommentCount' : '#sortByPublishedAt';
-
+                        currentSort.field === 'evergreen' ? '#sortByDaysAgo' :
+                            currentSort.field === 'evergreen' ? '#sortByUpdatedAt' :
+                                currentSort.field === 'commentCount' ? '#sortByCommentCount' : '#sortByPublishedAt';
             if (sortColumn) {
                 $(sortColumn).addClass(currentSort.ascending ? 'asc' : 'desc');
             }
